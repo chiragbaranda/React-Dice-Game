@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> ReactJS Hello, World! </title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin> </script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin> </script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"> </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        #container {
+            padding: 20px;
+            background - color: # ffccff;
+        }
+
+        #container h1 {
+            font - size: 64px;
+            color: # ff3300;
+        }
+
+        .dice {
+            padding: 10px;
+            margin: 20px;
+            background-color: whitesmoke;
+            width: 50px;
+            height: 50px;
+            font-weight: bold;
+            border-radius: 10%;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        
+        p { display: inline-flex;
+            text-align: justify;
+        };
+
+/*
+        .col-sm-6 {
+            height: 400px;
+        }
+*/
+
+        
+
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row text-center" style="background-color:beige; color: darkorchid;">
+            <div class="col-12">
+                <h1> Welcome to Dice Game! </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6" style="background-color:#ADEFD1FF; color: forestgreen">
+                <div id="root"> </div>
+            </div>
+            <div class="col-sm-6 d-inline" style="background-color:#00203FFF; color: cornflowerblue;">
+                <div id="printDices123" style="{block: inline;}"> </div>
+            </div>
+        </div>
+        <div class="row text-center" style="background-color:beige; color: darkorchid;">
+            <div class="col-12">
+                <div id="printDices" class="d-inline"> </div>
+                <h2><p id="printSumDice"> </p> </h2>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <script type="text/babel">
+
+            function Labels(props){return  <h1> {props.name}</h1>;}
+            function Button(props) { return  < button onClick = {props.handleClick} className={props.classValue}> {props.name}</button>}
+            function CreateDice(props) {return <p key={props.index +1} className="dice"> {props.value} </p>}
+
+            class Counter extends React.Component {
+                            state = {size: 6,dice: 1,roll: 0}
+                            sizeIncrement = () => {
+                                this.setState({
+                                size: this.state.size + 1
+                                })
+                              }
+
+                              sizeDecrement = () => {
+                                this.state.size <= 2 ? alert("Dice sides can not be  < 2") : this.setState({
+                                  size: this.state.size - 1
+                                })
+                              }
+                              diceIncrement = () => {
+                                this.setState({
+                                  dice: this.state.dice + 1
+                                })
+                              }
+                              diceDecrement = () => {
+                                this.state.dice <= 1 ? alert("Dice can not be  < 1") : this.setState({
+                                  dice: this.state.dice - 1
+                                })
+                              }
+
+
+              rollDice = () => {
+                //      this.setState({roll:Math.floor(Math.random() * this.state.size) + 1})
+                  document.getElementById("printDices").innerHTML = " ";
+                  document.getElementById("printSumDice").innerHTML = " ";
+                  let rolls = [];
+                  let rollSum = 0;
+                    for (let i = 0; i < this.state.dice; i++) {
+                      rolls[i] = Math.floor(Math.random() * this.state.size) + 1;
+                      rollSum += rolls[i];
+                    }
+
+                
+                console.log(rolls);
+                let DiceList = [];  
+                  
+
+                rolls.map((tmp, index) => {
+//                    document.getElementById("printDices").append("Dice " + (index + 1) + " Value: " + tmp + " | ");
+                    DiceList.push(<CreateDice value={tmp} id={index} key={index} />);
+                })
+                  
+                  console.log(DiceList);
+                  document.getElementById("printSumDice").append("Total Sum : " + rollSum);
+                  ReactDOM.render( DiceList , document.querySelector('#printDices123'));
+              }
+                render() {
+
+                  return (<div> <Labels name = "Number of Dice" />
+                          <h1 className="text-primary"> {this.state.dice}</h1>
+                        
+                          <Button name="Decrement dice" handleClick={this.diceDecrement} classValue="btn btn-danger" /> &nbsp;
+                          <Button name = "Increment dice" handleClick = {this.diceIncrement} classValue="btn btn-success"  />
+                          
+                          <Labels name = "Number of size" />
+                          <h1 className="text-primary"> {this.state.size} </h1>
+                          
+                          <Button name="Decrement size" handleClick={this.sizeDecrement} classValue= "btn btn-danger" /> &nbsp;
+                          <Button name = "Increment size" handleClick = { this.sizeIncrement} classValue="btn btn-success"/>
+                          <br/><br/>
+                          <div>
+                          <Button name = "roll dice" handleClick = { this.rollDice} classValue="btn btn-warning" />
+                          <br/><br/>
+                              </div>
+                        </div>)
+
+                      }//end of render
+
+                    }//end of class
+
+                        ReactDOM.render( <Counter /> , document.querySelector('#root'))
+
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </div>
+</body>
+
+</html>

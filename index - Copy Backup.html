@@ -1,0 +1,113 @@
+<!DOCTYPE html >
+<html>
+    <head>
+    <title> ReactJS Hello, World! </title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin> </script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin> </script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"> </script>
+    <style>
+        #container {
+            padding: 20px;
+            background - color: # ffccff;
+        }
+
+        #container h1 {
+            font - size: 64px;
+            color: # ff3300;
+        }
+
+        .dice {
+            border: 1px red solid;
+            width: 40px;
+            text-align: center;
+        }
+        
+
+        .printDices123 {}
+    </style>
+</head>
+
+<body>
+    <div id="root"> </div>
+    <div id="printDices"> </div>
+    <div id="printDices123" style="{block: inline;}"> </div>
+    <p id="printSumDice"> </p>
+    
+    <script type="text/babel">
+
+        function Labels(props){return  <h1> For {props.name}</h1>;}
+            function Button(props) { return  < button onClick = {props.handleClick}> {props.name}</button>}
+            function CreateDice(props) {return <h4>Dice {props.id + 1} <p key={props.index +1} className="dice"> {props.value} </p> </h4> }
+
+            class Counter extends React.Component {
+                            state = {size: 6,dice: 1,roll: 0}
+                            sizeIncrement = () => {
+                                this.setState({
+                                size: this.state.size + 1
+                                })
+                              }
+
+                              sizeDecrement = () => {
+                                this.state.size <= 2 ? alert("Dice sides can not be  < 2") : this.setState({
+                                  size: this.state.size - 1
+                                })
+                              }
+                              diceIncrement = () => {
+                                this.setState({
+                                  dice: this.state.dice + 1
+                                })
+                              }
+                              diceDecrement = () => {
+                                this.state.dice <= 1 ? alert("Dice can not be  < 1") : this.setState({
+                                  dice: this.state.dice - 1
+                                })
+                              }
+
+
+              rollDice = () => {
+                //      this.setState({roll:Math.floor(Math.random() * this.state.size) + 1})
+                  document.getElementById("printDices").innerHTML = " ";
+                  document.getElementById("printSumDice").innerHTML = " ";
+                  let rolls = [];
+                  let rollSum = 0;
+                    for (let i = 0; i < this.state.dice; i++) {
+                      rolls[i] = Math.floor(Math.random() * this.state.size) + 1;
+                      rollSum += rolls[i];
+                    }
+
+                
+                console.log(rolls);
+                let DiceList = [];  
+                  
+
+                rolls.map((tmp, index) => {
+//                    document.getElementById("printDices").append("Dice " + (index + 1) + " Value: " + tmp + " | ");
+                    DiceList.push(<CreateDice value={tmp} id={index} key={index} />);
+                })
+                  
+                  console.log(DiceList);
+                  document.getElementById("printSumDice").append("Total Sum : " + rollSum);
+                  ReactDOM.render( DiceList , document.querySelector('#printDices123'));
+              }
+                render() {
+
+                  return (<div> <Labels name = "Number of Dice" />
+                          <p> {this.state.dice}</p>
+                          <Button name = "Increment dice" handleClick = {this.diceIncrement}  />
+                          <Button name="Decrement dice" handleClick={this.diceDecrement} />
+                          <Labels name = "Number of size" />
+                          <p> {this.state.size} </p>
+                          <Button name = "Increment size" handleClick = { this.sizeIncrement} />
+                          <Button name="Decrement size" handleClick={this.sizeDecrement} />
+                          <Labels name = "your values:" />
+                          <Button name = "roll dice" handleClick = { this.rollDice} />
+                        </div>)
+
+                      }//end of render
+
+                    }//end of class
+
+                        ReactDOM.render( <Counter /> , document.querySelector('#root'))
+
+        </script>
+</body></html>
